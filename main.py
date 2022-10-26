@@ -12,8 +12,7 @@ def clone_csv():
     put_file_path = Path.joinpath(put_p, NAME_FILE)
     if Path.is_file(get_file_path):
         put_file_path.write_bytes(get_file_path.read_bytes())
-        get_file_path.unlink()
-        print(get_file_path)
+        # get_file_path.unlink()
     else:
         print('nofile')
             
