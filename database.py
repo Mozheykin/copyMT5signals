@@ -30,16 +30,15 @@ class SQL:
 
     def add_signal(self, s:main.Signal):
         with self.db:
-            return self.cursor.execute(f'INSERT INTO signals VALUES(?,?,?,?,?,?,?,?,?,?,?)', (s.account, s.balance, s.symbol, s.volume, s.ticket, s.type_, s.time, s.open_, s.sl, s.tp, s.order))
+            return self.cursor.execute(f'INSERT INTO signals VALUES(?,?,?,?,?,?,?,?,?,?,?)', (s.account, s.balance, s.symbol, s.volume, s.ticket, s.type_, s.time, s.open_, s.sl, s.tp, s.res))
     
     def check_signal(self, s:main.Signal):
         with self.db:
             return self.cursor.execute(f'SELECT *  FROM signals WHERE ticket=?', (s.ticket,)).fetchone()
     
-    #def modify_signal(self, s:Signal):
-     #   with self.db:
-      #      return self.cursor.execute(f'UPDATE signals SET sl=?, tp=?, ',
-
+    def modify_signal(self, s:main.Signal):
+        with self.db:
+            return self.cursor.execute(f'UPDATE signals SET sl=? and tp=? WHERE ticket=?', (s.sl, s.tp, s.ticket))
 
     def __exit__(self, *args, **kwargs):
         self.db.commit()
