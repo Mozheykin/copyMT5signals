@@ -3,7 +3,7 @@ from config import get_path, put_path
 import csv
 from typing import NamedTuple
 from datetime import datetime 
-from database import sql
+import database 
 
 class Signal(NamedTuple):
     account:str
@@ -39,15 +39,21 @@ def push_orders():
 
 def main():
     try:
-        DB = sql()
+        DB = database.SQL()
         get_p = Path(get_path)
         get_file_path = Path.joinpath(get_p, NAME_FILE)
-        #while True:
+        #while True: enable cicle!!!!!
         if Path.is_file(get_file_path):
             list_signals = get_file(path_file=get_file_path)
             print(list_signals)
             for signal in list_signals:
-                print(DB.check_signal(signal))
+                if not DB.check_signal(signal):
+                    DB.add_signal(signal)
+                else:
+                    ...
+                    # check modyfi
+            # check orders must close...
+            # Write file
     except KeyboardInterrupt:
         print('Quite')
 
