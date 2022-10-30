@@ -17,8 +17,8 @@ class SQL:
                     type LONG NOT NULL,
                     time DATETIME NOT NULL,
                     open REAL NOT NULL,
-                    sl REAL NOT NULL,
-                    tp REAL NOT NULL,
+                    sl DOUBLE NOT NULL,
+                    tp DOUBLE NOT NULL,
                     res VARCHAR(15))
                     ''')
         except self.db.Error as ex:
@@ -38,7 +38,7 @@ class SQL:
     
     def modify_signal(self, s:main.Signal):
         with self.db:
-            return self.cursor.execute(f'UPDATE signals SET sl=? and tp=? WHERE ticket=?', (s.sl, s.tp, s.ticket))
+            return self.cursor.execute(f'UPDATE signals SET sl=?, tp=? WHERE ticket=?', (s.sl, s.tp, s.ticket,))
 
     def __exit__(self, *args, **kwargs):
         self.db.commit()

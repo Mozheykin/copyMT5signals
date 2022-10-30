@@ -45,14 +45,21 @@ def main():
         # TODO while True: enable cicle!!!!!
         if Path.is_file(get_file_path):
             list_signals = get_file(path_file=get_file_path)
+            must_open = []
+            must_close = []
+            must_modify = []
+            dont_turn = []
             for signal in list_signals:
                 if db_signal:=DB.check_signal(signal):
                     if tuple(str(par) for par in db_signal) == tuple(param for param in signal):
-                        print(db_signal)
+                        dont_turn.append(signal)
                     else:
-                        print(DB.modify_signal(signal))
+                        DB.modify_signal(signal)
+                        must_modify.append(signal)
                 else:
                     DB.add_signal(signal)
+                    must_open.append(signal)
+
             # TODO check orders must close...
             # TODO Write file
     except KeyboardInterrupt:
