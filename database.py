@@ -39,6 +39,10 @@ class SQL:
     def modify_signal(self, s:main.Signal):
         with self.db:
             return self.cursor.execute(f'UPDATE signals SET sl=?, tp=? WHERE ticket=?', (s.sl, s.tp, s.ticket,))
+    
+    def all_orders_not_close(self):
+        with self.db:
+            return self.cursor.execute(f'SELECT * FROM signals WHERE res=?', ('',)).fetchall()
 
     def __exit__(self, *args, **kwargs):
         self.db.commit()
