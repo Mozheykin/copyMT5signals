@@ -1,10 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                                   create_csv.mq5 |
-//|                                                   Mozheykin Igor |
-//|           https://www.upwork.com/freelancers/~01dd7daccf19642309 |
 //+------------------------------------------------------------------+
-#property copyright "Mozheykin Igor"
-#property link      "https://www.upwork.com/freelancers/~01dd7daccf19642309"
 #property version   "1.00"
 int orders_count;
 //+------------------------------------------------------------------+
