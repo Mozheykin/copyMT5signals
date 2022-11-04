@@ -1,2 +1,2 @@
-get_path = 'C:\\Users\\user\\AppData\\Roaming\\MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Files'
-put_path = 'C:\\Users\\user\\AppData\\Roaming\\MetaQuotes\\Terminal\\6898FBE063792F5CEA626E7ECE071114\\MQL5\\Files'
+get_path = 'C:\\Users\\arman\\AppData\\Roaming\\MetaQuotes\\Terminal\\3E424A27A2E075E2AC6E5A1631AE37D9\\MQL5\\Files\\'
+put_path = 'C:\\Users\\arman\\AppData\\Roaming\\MetaQuotes\\Terminal\\F13BE7AFEB60E8C0600A2A7CA153A18D\\MQL5\\Files\\'
