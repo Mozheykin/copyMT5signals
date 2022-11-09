@@ -9,10 +9,14 @@ def format_signal_with_str(s:tuple, res:str=''):
 
 def get_signals(path_file:Path) -> list:
     result = []
-    with path_file.open(newline='', encoding='utf-16') as file:
-        reader = csv.reader(file)
-        result = [format_signal_with_str((row[0]+'\t').split('\t')) for row in reader]
-    return result
+    try:
+        with path_file.open('r', newline='', encoding='utf-16') as file:
+            reader = csv.reader(file)
+            result = [format_signal_with_str((row[0]+'\t').split('\t')) for row in reader]
+            return result
+    except PermissionError as er:
+        return None
+    
 
 def set_signals(path_file:Path, signals:list) -> bool:
     print(signals)

@@ -1,7 +1,11 @@
 //+------------------------------------------------------------------+
 //|                                                      get_csv.mq5 |
+//|                                                   Mozheykin Igor |
+//|           https://www.upwork.com/freelancers/~01dd7daccf19642309 |
 //+------------------------------------------------------------------+
 #include <Trade\Trade.mqh>
+#property copyright "Mozheykin Igor"
+#property link      "https://www.upwork.com/freelancers/~01dd7daccf19642309"
 #property version   "1.00"
 
 CTrade ExtTrade;
@@ -48,19 +52,24 @@ void OnTick()
          double sl = double(FileReadString(filehandle));
          double tp = double(FileReadString(filehandle));
          string res = FileReadString(filehandle);
-
-
+         
+         long _digits = SymbolInfoInteger(symbol, SYMBOL_DIGITS);
+         
+         open = NormalizeDouble(open, _digits);
+         sl = NormalizeDouble(sl, _digits);
+         tp = NormalizeDouble(tp, _digits);
          Print("Line 57: " + account+ "  " + balance+ "  " + symbol+ "  " + volume+ "  " + ticket+ "  " + type_ + "  "+ time+ "  "+ open+ "  "+ sl + "  "+ tp+ "  " + res);
          if(res=="OPEN")
-            OpenOrder(type_,open,sl,tp,symbol,volume,ticket);
+            while (OpenOrder(type_,open,sl,tp,symbol,volume,ticket) == false)
+               PrintFormat("OrderSend error %d",GetLastError());
          if(res=="MODIFY")
-            OrderModify(type_, open, sl, tp, ticket);
+            Print(OrderModify(type_, open, sl, tp, ticket));
          if(res=="CLOSE")
-            OrderClose(type_, ticket);
+            Print(OrderClose(type_, ticket));
          //if (!ChechModifyOrder(sl, tp, ticket))
          //   OpenOrder();
         }
-      Print("---------------------------------------------------------------------------------------------------------------------------------------------");
+      //Print("---------------------------------------------------------------------------------------------------------------------------------------------");
       FileClose(filehandle);
      }
     FileDelete("signal.csv");
@@ -143,10 +152,15 @@ bool OrderClose(ulong type_, string comment)
 //+------------------------------------------------------------------+
 bool OpenOrder(ulong type_, double open, double sl, double tp, string symbol, double volume, string ticket)
   {
-   if(type_ == 0)
-      return(ExtTrade.PositionOpen(symbol, ORDER_TYPE_BUY, volume, SymbolInfoDouble(symbol,SYMBOL_ASK), sl, tp, ticket));
-   if(type_==1)
+   if(type_ == 0){
+      Print(SymbolInfoDouble(symbol,SYMBOL_ASK));
+      Print(symbol);
+      return(ExtTrade.PositionOpen(symbol, ORDER_TYPE_BUY, volume, SymbolInfoDouble(symbol,SYMBOL_ASK), sl, tp, ticket));}
+   if(type_==1){
+      Print(SymbolInfoDouble(symbol,SYMBOL_BID));
+      Print(symbol);
       return(ExtTrade.PositionOpen(symbol, ORDER_TYPE_SELL, volume, SymbolInfoDouble(symbol,SYMBOL_BID), sl, tp, ticket));
+      }
    if(type_==2)
       return(ExtTrade.OrderOpen(symbol, ORDER_TYPE_BUY_LIMIT, volume, SymbolInfoDouble(symbol,SYMBOL_ASK), open, sl, tp, ORDER_TIME_GTC, 0, ticket));
    if(type_==3)
