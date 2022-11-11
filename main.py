@@ -76,7 +76,7 @@ def main():
                             break
             else:
                 print(f'[INFO] No file path: {get_file_path}')
-                sleep(1)
+               
     except KeyboardInterrupt:
         print('Quite'.center(40, '-'))
 

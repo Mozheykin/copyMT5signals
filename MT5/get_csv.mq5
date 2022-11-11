@@ -24,7 +24,7 @@ CTrade ExtTrade;
 int OnInit()
   {
 //--- create timer
-   EventSetMillisecondTimer(5000);
+   EventSetMillisecondTimer(2500);
    //EventSetTimer(1);
 //---
    return(INIT_SUCCEEDED);
@@ -183,8 +183,9 @@ void OnTimer()
         }
       //Print("---------------------------------------------------------------------------------------------------------------------------------------------");
       FileClose(filehandle);
+      FileDelete("signal.csv");
      }
-   FileDelete("signal.csv");
+   
 
   }
 //+------------------------------------------------------------------+

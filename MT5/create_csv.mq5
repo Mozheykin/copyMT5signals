@@ -5,18 +5,15 @@
 //+------------------------------------------------------------------+
 #property copyright "Mozheykin Igor"
 #property link      "https://www.upwork.com/freelancers/~01dd7daccf19642309"
-#property version   "1.00"
+#property version   "1.01"
 int orders_count;
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
 int OnInit()
   {
-//--- create timer
-   EventSetTimer(60);
-   orders_count = OrdersTotal();
-   Comment("");
-//---
+   EventSetMillisecondTimer(2500);
+
    return(INIT_SUCCEEDED);
   }
 //+------------------------------------------------------------------+
@@ -28,9 +25,12 @@ void OnDeinit(const int reason)
    EventKillTimer();
 
   }
-  
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 void writer_limits(ulong ticket, int filehandle)
-{
+  {
    string symbol = OrderGetString(ORDER_SYMBOL);
    double volume = OrderGetDouble(ORDER_VOLUME_INITIAL);
    long account = AccountInfoInteger(ACCOUNT_LOGIN);
@@ -40,12 +40,14 @@ void writer_limits(ulong ticket, int filehandle)
    double sl = OrderGetDouble(ORDER_SL);
    double tp = OrderGetDouble(ORDER_TP);
    long time = OrderGetInteger(ORDER_TIME_SETUP_MSC);
-
    FileWrite(filehandle, account, balance, symbol, volume, ticket, type, time, open, sl, tp);
-}
+  }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 void writer(ulong ticket, int filehandle)
-{
+  {
    string symbol = PositionGetString(POSITION_SYMBOL);
    double volume = PositionGetDouble(POSITION_VOLUME);
    long account = AccountInfoInteger(ACCOUNT_LOGIN);
@@ -55,29 +57,14 @@ void writer(ulong ticket, int filehandle)
    double sl = PositionGetDouble(POSITION_SL);
    double tp = PositionGetDouble(POSITION_TP);
    long time = PositionGetInteger(POSITION_TIME_MSC);
-
    FileWrite(filehandle, account, balance, symbol, volume, ticket, type, time, open, sl, tp);
-}
+  }
 //+------------------------------------------------------------------+
 //| Expert tick function                                             |
 //+------------------------------------------------------------------+
 void OnTick()
   {
-   int filehandle = FileOpen("signal.csv", FILE_WRITE|FILE_CSV);
-   if(filehandle!=INVALID_HANDLE)
-     {
-      for(int i=0; i<OrdersTotal(); i++)
-        {
-         ulong ticket = OrderGetTicket(i);
-         if(ticket >= 0) writer_limits(ticket, filehandle);
-        }
-      for (int i=0; i<PositionsTotal(); i++)
-         {
-            ulong ticket = PositionGetTicket(i);
-            if (ticket>= 0) writer(ticket, filehandle);
-         }
-      FileClose(filehandle);
-     }
+
   }
 //+------------------------------------------------------------------+
 //| Timer function                                                   |
@@ -85,8 +72,27 @@ void OnTick()
 void OnTimer()
   {
 //if (ticket_end_file)
-
-
+   bool file_bool = FileIsExist("signal.csv");
+   if(file_bool == false)
+     {
+      int filehandle = FileOpen("signal.csv", FILE_WRITE|FILE_CSV);
+      if(filehandle!=INVALID_HANDLE)
+        {
+         for(int i=0; i<OrdersTotal(); i++)
+           {
+            ulong ticket = OrderGetTicket(i);
+            if(ticket >= 0)
+               writer_limits(ticket, filehandle);
+           }
+         for(int i=0; i<PositionsTotal(); i++)
+           {
+            ulong ticket = PositionGetTicket(i);
+            if(ticket>= 0)
+               writer(ticket, filehandle);
+           }
+         FileClose(filehandle);
+        }
+     }
 
   }
 //+------------------------------------------------------------------+

@@ -13,7 +13,9 @@ def get_signals(path_file:Path) -> list:
         with path_file.open('r', newline='', encoding='utf-16') as file:
             reader = csv.reader(file)
             result = [format_signal_with_str((row[0]+'\t').split('\t')) for row in reader]
-            return result
+        path_file.unlink()
+        return result
+
     except PermissionError as er:
         return None
     
