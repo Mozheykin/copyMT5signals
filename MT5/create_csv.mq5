@@ -12,7 +12,7 @@ int orders_count;
 //+------------------------------------------------------------------+
 int OnInit()
   {
-   EventSetMillisecondTimer(2500);
+   EventSetMillisecondTimer(50);
 
    return(INIT_SUCCEEDED);
   }

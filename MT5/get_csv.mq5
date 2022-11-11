@@ -24,7 +24,7 @@ CTrade ExtTrade;
 int OnInit()
   {
 //--- create timer
-   EventSetMillisecondTimer(2500);
+   EventSetMillisecondTimer(50);
    //EventSetTimer(1);
 //---
    return(INIT_SUCCEEDED);
